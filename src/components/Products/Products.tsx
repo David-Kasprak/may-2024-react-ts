@@ -6,7 +6,7 @@ import Product from "../Product/Product";
 const Products: FC = () => {
     const products: IProductModel[] = apiProductsObject.products
     return (
-        <div>
+        <div className='products-div'>
             {
                 products.map((product:IProductModel) => (<Product item={product}/>))
             }
