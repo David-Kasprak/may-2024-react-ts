@@ -1,4 +1,4 @@
-let products = {
+ export const apiProductsObject = {
     "products": [
     {
         "id": 1,
