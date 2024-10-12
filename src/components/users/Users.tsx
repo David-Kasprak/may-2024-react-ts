@@ -18,7 +18,7 @@ const Users: FC<UserProps> = ({lift}) => {
     return (
         <div>
             {
-                users.map(value => <User lift={lift}
+                users.map(value => <User key={value.id} lift={lift}
                                          item = {value}/> )
             }
         </div>

@@ -20,7 +20,7 @@ const userService = {
 
 const postService = {
     getPostsOfUser: async (id: number):Promise<IPost[]> => {
-    let axiosResponse = await axiosInstance.get<IResponsePostsModel>('/posts', {params: {userId: id}});
+    let axiosResponse = await axiosInstance.get<IResponsePostsModel>('/posts/user/'+id);
     return axiosResponse.data.posts
     }
 }
