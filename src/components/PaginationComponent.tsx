@@ -1,19 +1,21 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {useSearchParams} from "react-router-dom";
 import {apiService} from "../services/api.service";
 
-const PaginationComponent = () => {
+type PaginationProps = {
+flag: boolean
+};
+
+const PaginationComponent:FC<PaginationProps> = ({flag}) => {
     const [query, setQuery] = useSearchParams({page: '1'});
 
-    useEffect(() => {
-        const page = query.get('page');
-        if (page) {
-            apiService.todo.getAll(+page)
-        }
-    }, [query]);
-
     const onClickPrevHandler = () => {
-
+        const page = query.get('page');
+        if (page && +page > 0) {
+            let currentPage = +page;
+            currentPage--;
+            setQuery({page: currentPage.toString()})
+        }
     };
     const onClickNextHandler = () => {
         const page = query.get('page');
@@ -26,7 +28,7 @@ const PaginationComponent = () => {
     return (
         <div>
             <button onClick={onClickPrevHandler}>Previous</button>
-            <button onClick={onClickNextHandler}>Next</button>
+            <button onClick={onClickNextHandler} disabled={flag}>Next</button>
         </div>
     );
 };
