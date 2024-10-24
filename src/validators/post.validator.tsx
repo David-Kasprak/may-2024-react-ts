@@ -7,7 +7,7 @@ export const postValidator = Joi.object({
             "string.pattern.base": "you don't match the pattern",
         }),
     body: Joi.string().min(3).messages({
-        "string.min": "age must be at least 1"}),
+        "string.min": "must be at least 3 characters"}),
     userId: Joi.number().min(1).messages({
         "NUmber.min": "must be at least 1",
     }),
