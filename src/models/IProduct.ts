@@ -11,26 +11,25 @@ export interface IProduct {
     brand: string;
     sku: string;
     weight: number;
-    dimensions: Dimensions;
+    dimensions: IDimensions;
     warrantyInformation: string;
     shippingInformation: string;
     availabilityStatus: string;
-    reviews: Review[];
+    reviews: IReviews[];
     returnPolicy: string;
     minimumOrderQuantity: number;
-    meta: Meta;
-    thumbnail: string;
+    meta: IMeta;
     images: string[];
+    thumbnail: string;
 }
 
-interface Meta {
-    createdAt: string;
-    updatedAt: string;
-    barcode: string;
-    qrCode: string;
+interface IDimensions {
+    width: number;
+    height: number;
+    depth: number;
 }
 
-interface Review {
+interface IReviews {
     rating: number;
     comment: string;
     date: string;
@@ -38,8 +37,9 @@ interface Review {
     reviewerEmail: string;
 }
 
-interface Dimensions {
-    width: number;
-    height: number;
-    depth: number;
+interface IMeta {
+    createdAt: string;
+    updatedAt: string;
+    barcode: string;
+    qrCode: string;
 }

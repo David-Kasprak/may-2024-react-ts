@@ -18,7 +18,7 @@ const AuthResourcesPage = () => {
     }, []);
     return (
         <div>
-            AuthResourcesPage
+            {JSON.stringify(products)};
         </div>
     );
 };
