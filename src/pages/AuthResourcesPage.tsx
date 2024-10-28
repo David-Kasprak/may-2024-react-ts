@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {loadAuthResources} from "../services/api.service";
+import {loadAuthResources, refresh} from "../services/api.service";
 import {IProduct} from "../models/IProduct";
 
 const AuthResourcesPage = () => {
@@ -11,7 +11,9 @@ const AuthResourcesPage = () => {
                 setProducts(products)
             }
         })
-            .catch(reason => console.log(reason))
+            .catch(reason => {
+                refresh().then()
+            })
         return () => {
             console.log('useEffect is done');
         }

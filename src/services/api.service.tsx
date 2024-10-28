@@ -3,6 +3,7 @@ import {IUserWithToken} from "../models/IUserWithToken";
 import {BaseResponseModelType} from "../models/BaseResponseModelType";
 import {IProduct} from "../models/IProduct";
 import {retrieveLocalStorage} from "../helpers/helpers";
+import {ITokenPair} from "../models/ITokenPair";
 
 const axiosInstance = axios.create({
     baseURL: 'https://dummyjson.com/auth/',
@@ -34,4 +35,15 @@ export const loadAuthResources = async (): Promise<IProduct[] | undefined> => {
     const {data} = await axiosInstance.get<BaseResponseModelType>('/products');
     console.log(data);
     return data.products;
+}
+
+export const refresh = async () => {
+   const iUserWithToken = retrieveLocalStorage<IUserWithToken>('user');
+   const {data: {accessToken, refreshToken}} = await axiosInstance.post<ITokenPair>('/refresh', {
+       refreshToken: iUserWithToken.refreshToken,
+       expiresInMins: 1
+   });
+   iUserWithToken.accessToken = accessToken;
+   iUserWithToken.refreshToken = refreshToken;
+   localStorage.setItem('user', JSON.stringify(iUserWithToken));
 }
