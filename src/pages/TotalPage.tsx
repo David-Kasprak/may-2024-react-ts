@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useStore} from "../store/store";
 import {IPost} from "../models/IPost";
+import {mergePostComments} from "../helpers/helper";
 
 const TotalPage = () => {
     let {postSlice:{allPosts}, commentSlice:{allComments}} = useStore();
      const[posts, setPosts] = useState<IPost[]>([]);
      useEffect(() => {
-
-     });
+         setPosts(mergePostComments(allPosts, allComments));
+     }, []);
     return (
         <ul>
             {
