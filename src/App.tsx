@@ -1,10 +1,19 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import './App.css';
-import {useAppSelector} from "./redux/store";
+import {useAppDispatch, useAppSelector} from "./redux/store";
+import {loadUsers} from "./redux/slices/user_slice";
 
 const App: FC = () => {
     
     let userSliceState = useAppSelector(state => state.userSlice);
+    let dispatch = useAppDispatch();
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(value => value.json())
+            .then(value => {
+                dispatch(loadUsers(value))
+            });
+    })
     
   return (
      <>
