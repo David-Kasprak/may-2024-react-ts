@@ -1,6 +1,9 @@
 import {configureStore, createAsyncThunk, createSlice, isFulfilled, isRejected, PayloadAction} from "@reduxjs/toolkit";
 import {useDispatch, useSelector} from "react-redux";
 import {IUser} from "../models/IUser";
+import {IPost} from "../models/IPost";
+
+// Users
 
 type UserSliceType = {
     users: IUser[],
@@ -11,6 +14,19 @@ const userInitState: UserSliceType = {
     users: [],
     user: null
 }
+
+//Posts
+
+type PostSliceType = {
+    posts: IPost[],
+    post: IPost | null
+}
+
+const postInitState: PostSliceType = {
+    posts: [],
+    post: null
+}
+
 
 // ----------------------------------- Async Functions
 
@@ -34,7 +50,31 @@ const loadUser = createAsyncThunk('userSlice/loadUser', async (id: number, thunk
         thunkAPI.rejectWithValue(e);
     }
 
-})
+});
+
+const loadPosts = createAsyncThunk('postSlice/loadPosts', async (_, thunkAPI) => {
+    try {
+        const postsFromAPI = await fetch('https://jsonplaceholder.typicode.com/posts')
+            .then(value => value.json());
+        return thunkAPI.fulfillWithValue(postsFromAPI);
+    }
+    catch (e) {
+        return thunkAPI.rejectWithValue(e);
+    }
+});
+
+const loadPost = createAsyncThunk('postSlice/loadPost', async (id:number, thunkAPI) => {
+    try {
+        const postsFromAPI = await fetch('https://jsonplaceholder.typicode.com/posts/'+id)
+            .then(value => value.json());
+        return thunkAPI.fulfillWithValue(postsFromAPI);
+    }
+    catch (e) {
+        return thunkAPI.rejectWithValue(e);
+    }
+});
+
+// User slice
 
 let userSlice = createSlice({
     name: 'userSlice',
@@ -65,15 +105,47 @@ let userSlice = createSlice({
             })
 });
 
+// Post slice
+
+let postSlice = createSlice({
+    name: 'postSlice',
+    initialState: postInitState,
+    reducers: {
+        placeholderFn: () => {
+        }
+    },
+    extraReducers: builder =>
+        builder
+            .addCase(loadPosts.fulfilled, (state, action:PayloadAction<IPost[]>) => {
+                state.posts = action.payload;
+            })
+            .addCase(loadPosts.rejected, (state, action:PayloadAction<any>) => {
+                console.log('error - ', action.payload)
+            })
+            .addCase(loadPost.fulfilled, (state, action:PayloadAction<IPost[]>) => {
+                state.posts = action.payload;
+            })
+            .addCase(loadPost.rejected, (state, action:PayloadAction<any>) => {
+                console.log('error - ', action.payload)
+            })
+})
+
 export const userSliceActions = {
     ...userSlice.actions,
     loadUsers,
     loadUser
 };
 
+export const postSliceActions = {
+    ...postSlice.actions,
+    loadPosts,
+    loadPost
+}
+
 export let store = configureStore({
     reducer: {
-        userReducer: userSlice.reducer
+        userReducer: userSlice.reducer,
+        postReducer: postSlice.reducer
     }
 });
 
